@@ -7,13 +7,16 @@ typedef struct Profile{
     double height;//in inches
 }Profile;
 
-int profile_set_name(Profile *a, char name[30]);
+int profile_set_name(Profile *a, char *name);
 
-int profile_get_name(Profile *a);
+int profile_get_name(Profile *a, char *name);
 
 int profile_set_weight(Profile *a, double weight);
 
-int profile_get_weight(Profile *a);
+double profile_get_weight(Profile *a);
 
+int profile_set_height(Profile *a, double height);
+
+double profile_get_height(Profile *a);
 
 

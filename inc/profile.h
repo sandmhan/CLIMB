@@ -1,4 +1,7 @@
 //Header File for Profiles
+#ifndef PROFILES_H__
+#define  PROFILES_H__
+
 #include <stdio.h>
 
 typedef struct{
@@ -19,4 +22,4 @@ int profile_set_height(Profile *a, double height);
 
 double profile_get_height(Profile *a);
 
-
+#endif

@@ -4,6 +4,36 @@
 #include <string.h>
 #include "profile.h"
 
+Profile *profile_init(char *name, double weight, double height){
+	Profile *person = malloc(sizeof(Profile));
+	if(person == NULL){
+		printf("\nMalloc Failed");
+		return NULL;
+	}
+
+	profile_set_name(person, name);
+	profile_set_height(person, height);
+	profile_set_weight(person,weight);
+	return person;
+}
+
+void profile_print(Profile *a){
+	if(a == NULL){
+		return;
+	}
+
+	char *name = NULL;
+	double height, weight;
+
+	profile_get_name(a, name);
+	height = profile_get_height(a);
+	weight = profile_get_weight(a);
+
+	printf("\nProfile Overview \n Name: %s \n Height: %f \n Weight: %f",
+			name, height, weight);
+	return;
+}
+
 int profile_set_name(Profile *a, char *name){
     if(a == NULL){
         printf("\nERROR: PROFILE DOES NOT EXIST\n");
@@ -28,11 +58,7 @@ int profile_get_name(Profile *a, char *name){
         return -1;
     }
 
-    //copies all the bits of the name
-    memcpy(name, a->name, strlen(a->name));
-
-    //appends with null terminator
-    name[strlen(name)-1] = '\0';
+	strncpy(name, a->name, 30);
 
     return 0;
 }
@@ -92,25 +118,25 @@ double profile_get_height(Profile *a){
 }
 
 //Main Tester for Profile Managing
-int main(){
-
-    struct Profile *a = malloc(sizeof(Profile));
-    char name[30] = "Adam Dudley";
-    char cpyname[30];
-
-    profile_set_name(a, name);
-    profile_get_name(a,cpyname);
-    printf("\n%s\n", cpyname);
-
-    profile_set_weight(a, 240.43);
-    printf("\nWeight (lbs):%.2f\n",profile_get_weight(a));
-
-    profile_set_height(a,76.4);
-    printf("\nHeight (inches):%.2f\n",profile_get_height(a));
-
-    return 0;
-
-}
+//int main(){
+//
+//    struct Profile *a = malloc(sizeof(Profile));
+//    char name[30] = "Adam Dudley";
+//    char cpyname[30];
+//
+//    profile_set_name(a, name);
+//    profile_get_name(a,cpyname);
+//    printf("\n%s\n", cpyname);
+//
+//    profile_set_weight(a, 240.43);
+//    printf("\nWeight (lbs):%.2f\n",profile_get_weight(a));
+//
+//    profile_set_height(a,76.4);
+//    printf("\nHeight (inches):%.2f\n",profile_get_height(a));
+//
+//    return 0;
+//
+//}
 
 
 

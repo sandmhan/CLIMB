@@ -10,6 +10,10 @@ typedef struct{
     double height;//in inches
 }Profile;
 
+Profile *profile_init(char *name, double weight, double height);
+
+void profile_print(Profile *a);
+
 int profile_set_name(Profile *a, char *name);
 
 int profile_get_name(Profile *a, char *name);

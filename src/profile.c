@@ -22,14 +22,14 @@ void profile_print(Profile *a){
 		return;
 	}
 
-	char *name = NULL;
+	char name[30]; 
 	double height, weight;
 
 	profile_get_name(a, name);
 	height = profile_get_height(a);
 	weight = profile_get_weight(a);
 
-	printf("\nProfile Overview \n Name: %s \n Height: %f \n Weight: %f",
+	printf("\nProfile Overview \n Name: %s \n Height: %f \n Weight: %f\n",
 			name, height, weight);
 	return;
 }
@@ -58,7 +58,7 @@ int profile_get_name(Profile *a, char *name){
         return -1;
     }
 
-	strncpy(name, a->name, 30);
+    sprintf(name, "%s",a->name);
 
     return 0;
 }

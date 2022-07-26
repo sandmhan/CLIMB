@@ -2,6 +2,7 @@
 //Author: Austin Sanders
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "files.h"
 #include "profile.h"
 
@@ -10,7 +11,7 @@ void menu_welcome();
 
 int main(int argc, char *argv[]) {
     menu_welcome();
-    
+    menu_prompt(NULL); 
 	//Profile *dude = profile_init("Arashiyama Jurota", 79, 295);
 	//profile_print(dude);
 
@@ -26,15 +27,15 @@ void menu_prompt(char *buff){
     
     printf("\nMenu Options:\n(C)reate profile\n(P)rint profile\n(Q)uit\n\nARABE>");//arabe means choose in jap
     char preinput = 0;//flag for cl args
-    if(buff == NULL){
-        buff = malloc(sizeof(char));
-        &buff = getchar();
-        preinput = 1;
-    }
-
     char valid = 1;
     while(valid){
-        switch(buff){
+        if(buff == NULL){
+            buff = malloc(sizeof(char));
+            *buff = getchar();
+            preinput = 1;
+        }
+
+        switch(*buff){
             case 'C':
             case 'c':
                 printf("\n DOODOODOO A profile is being created");
@@ -55,6 +56,10 @@ void menu_prompt(char *buff){
             
             default:
                 printf("\nInvalid input. Please try again:");
+                free(buff);
+                buff = NULL;
+                break;
+        }
     }
 
     //if memory was allocated, free it you goob

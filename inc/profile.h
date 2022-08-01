@@ -5,7 +5,8 @@
 #include <stdio.h>
 
 typedef struct{
-    char name[30];
+    char name[100];
+    char dirname[100];
     double weight;//in lbs
     double height;//in inches
 }Profile;
@@ -13,6 +14,8 @@ typedef struct{
 Profile *profile_init(char *name, double weight, double height);
 
 void profile_print(Profile *a);
+
+FILE *profile_make_file(Profile *a);
 
 int profile_set_name(Profile *a, char *name);
 

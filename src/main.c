@@ -6,14 +6,15 @@
 #include "files.h"
 #include "profile.h"
 
-void menu_prompt(char *buff);
+void menu_prompt(char *buff, Profile *a);
+FILE *menu_profile_create(Profile *a);
 void menu_welcome();
 
 int main(int argc, char *argv[]) {
     menu_welcome();
-    menu_prompt(NULL); 
-	//Profile *dude = profile_init("Arashiyama Jurota", 79, 295);
-	//profile_print(dude);
+    Profile *dude = malloc(sizeof(Profile));
+    menu_prompt(NULL,dude); 
+	profile_print(dude);
 
     return 0;
 }
@@ -23,7 +24,7 @@ int main(int argc, char *argv[]) {
 //The menu prompt will appear, input will be retrieved from 
 //user if buff is empty. Otherwise, the input comes from argv[1].
 //Then the appropriate action is taken based on the char given.
-void menu_prompt(char *buff){
+void menu_prompt(char *buff, Profile *a){
     
     printf("\nMenu Options:\n(C)reate profile\n(P)rint profile\n(Q)uit\n\nARABE>");//arabe means choose in jap
     char preinput = 0;//flag for cl args
@@ -38,14 +39,13 @@ void menu_prompt(char *buff){
         switch(*buff){
             case 'C':
             case 'c':
-                printf("\n DOODOODOO A profile is being created");
+                menu_profile_create(a);
                 valid = 0;
                 break;
 
             case 'P':
             case 'p':
-                printf("\nSCHLAMI PROCLAMI A Profile is being printed for mami");
-                valid = 0;
+                profile_print(a);
                 break;
 
             case 'Q':
@@ -68,6 +68,27 @@ void menu_prompt(char *buff){
     }
 
     return; 
+}
+
+//Populates the fields for the profile, creates the file, and returns the pointer for use
+FILE *menu_profile_create(Profile *a){
+
+    char buff[100];
+    double weight,height;
+   
+    //error handle invalid inputs later
+    printf("\nPlease input the name for this profile: ");
+    profile_set_name(a, fgets(buff, 100,stdin));
+
+    printf("\nPlease input the weight for this profile: ");
+    scanf("%lf", &weight); 
+    profile_set_weight(a,weight);
+
+    printf("\nPlease input the height for this profile: ");
+    scanf("%lf", &height); 
+    profile_set_height(a,height);
+
+    return NULL;
 }
 
 void menu_welcome(){

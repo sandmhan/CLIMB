@@ -19,27 +19,49 @@ Profile *profile_init(char *name, double weight, double height){
 
 void profile_print(Profile *a){
 	if(a == NULL){
+        fprintf(stderr, "\nERROR: PROFILE DOES NOT EXIST\n");
 		return;
 	}
 
-	char name[30]; 
+	char name[100]; 
 	double height, weight;
 
 	profile_get_name(a, name);
 	height = profile_get_height(a);
 	weight = profile_get_weight(a);
 
-	printf("\nProfile Overview \n Name: %s \n Height: %f \n Weight: %f\n",
-			name, height, weight);
+	printf("\nProfile Overview \n Name: %s \n DIRNAME: %s \n Height: %f \n Weight: %f\n",
+			name, a->dirname, height, weight);
 	return;
+}
+
+//Writes profile data to file. Creates profile directory if one does not exist as well.
+//Files should be formatted in Markdown for better viewing experience.
+
+FILE *profile_make_file(Profile *a){
+    
+    if(a == NULL){
+        fprintf(stderr, "\nERROR: PROFILE DOES NOT EXIST\n");
+        return NULL;
+    }
+    
+    return NULL;
 }
 
 int profile_set_name(Profile *a, char *name){
     if(a == NULL){
-        printf("\nERROR: PROFILE DOES NOT EXIST\n");
+        fprintf(stderr, "\nERROR: PROFILE DOES NOT EXIST\n");
         return -1;
     }
-    strncpy(a->name,name,30);
+    
+    strncpy(a->name,name,100);
+    char d[2] = " ";
+    char *tok = strtok(name,d);//initial token
+    while(tok != NULL){//loop through appending name to elim spaces
+        strcat(a->dirname,tok);
+        tok = strtok(NULL,d);
+    }
+
     printf("\nSUCCESS: PROFILE NAME SET\n");
     return 0;
 }
@@ -49,7 +71,7 @@ int profile_set_name(Profile *a, char *name){
 //pointer. This approach will be chosen to create file names using profile name w/o direct reference
 int profile_get_name(Profile *a, char *name){
     if(a == NULL){//check if struct exists
-        printf("\nERROR: PROFILE NOT FOUND\n");
+        fprintf(stderr, "\nERROR: PROFILE DOES NOT EXIST\n");
         return -1;
         }
 
@@ -66,7 +88,7 @@ int profile_get_name(Profile *a, char *name){
 int profile_set_weight(Profile *a, double weight){
     
     if(a == NULL){//check if struct exists
-        printf("\nERROR: PROFILE NOT FOUND\n");
+        fprintf(stderr, "\nERROR: PROFILE DOES NOT EXIST\n");
         return -1;
     }
 
@@ -79,7 +101,7 @@ int profile_set_weight(Profile *a, double weight){
 double profile_get_weight(Profile *a){
 
     if(a == NULL){//check if struct exists
-        printf("\nERROR: PROFILE NOT FOUND\n");
+        fprintf(stderr, "\nERROR: PROFILE DOES NOT EXIST\n");
         return -1;
     }
 
@@ -93,7 +115,7 @@ double profile_get_weight(Profile *a){
 int profile_set_height(Profile *a, double height){
     
     if(a == NULL){//check if struct exists
-        printf("\nERROR: PROFILE NOT FOUND\n");
+        fprintf(stderr, "\nERROR: PROFILE DOES NOT EXIST\n");
         return -1;
     }
 
@@ -106,7 +128,7 @@ int profile_set_height(Profile *a, double height){
 double profile_get_height(Profile *a){
 
     if(a == NULL){//check if struct exists
-        printf("\nERROR: PROFILE NOT FOUND\n");
+        fprintf(stderr, "\nERROR: PROFILE DOES NOT EXIST\n");
         return -1;
     }
 
@@ -124,7 +146,7 @@ double profile_get_height(Profile *a){
 //    char name[30] = "Adam Dudley";
 //    char cpyname[30];
 //
-//    profile_set_name(a, name);
+//   profile_set_name(a, name);
 //    profile_get_name(a,cpyname);
 //    printf("\n%s\n", cpyname);
 //

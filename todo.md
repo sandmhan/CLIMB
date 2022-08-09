@@ -1,5 +1,6 @@
 # Current Task
 - fix appending '/' to delimiter.  
+- set up profile struct deletion (free names)
 
 # Recently Fixed
 - SegFault when trying to write to profile name.

@@ -4,6 +4,8 @@
 #include <string.h>
 #include "profile.h"
 
+const int NAME_MAXSIZE = 1000;
+
 Profile *profile_init(char *name, double weight, double height){
 	Profile *person = malloc(sizeof(Profile));
 	if(person == NULL){
@@ -48,20 +50,63 @@ FILE *profile_make_file(Profile *a){
     return NULL;
 }
 
+//Dynamically allocate memory for names. NAME_MAXSIZE upper limit.
 int profile_set_name(Profile *a, char *name){
+    
     if(a == NULL){
         fprintf(stderr, "\nERROR: PROFILE DOES NOT EXIST\n");
         return -1;
     }
     
-    strncpy(a->name,name,100);
-    char d[2] = " ";
-    char *tok = strtok(name,d);//initial token
-    while(tok != NULL){//loop through appending name to elim spaces
-        strcat(a->dirname,tok);
-        tok = strtok(NULL,d);
+    char *temp = NULL;
+    int ch = EOF;
+    size_t size = 0, index = 0;
+    
+
+    //takes in name char by char and DyAllocs memory for string
+    while(ch){
+        printf("\nName input loop %ld",index);
+        ch = getc(stdin);//retrieve one char
+        if(ch == EOF || ch == '\n'){//check if end of line/file is reached
+            ch = 0;
+        }
+
+        if(size <= index){
+           size += sizeof(char);
+           temp = realloc(name, size);//increase size by one char. Just enough memory for name will be allocated
+           if(!temp){//if realloc fails
+               free(temp);
+               temp = NULL;
+               return -1;
+           }
+           name = temp;
+
+        }
+
+        name[index++] = ch;
     }
 
+    //allocating memory for name to get copy of name out of scope
+    size++;//add one for NTC
+    a->name = malloc(sizeof(char) * size);
+    memcpy(a->name, name, size);
+
+    //Tokenizing string to make into directory name for files pertaining to profile
+    char d[2] = " ";
+    char pathSym[2] = {'.','/'};
+    char *tok = strtok(name,d);//initial token
+    a->dirname = malloc(sizeof(char)*size + 3);//+3 for ./*/
+    a->dirname[0] = pathSym[0];
+    a->dirname[1] = pathSym[1];
+    
+    while(tok != NULL){//loop through appending name to elim spaces
+        strcat(a->dirname,tok);
+        size--;//space character being removed from name
+        tok = strtok(NULL,d);
+    }
+    a->dirname[size+2] = pathSym[1];
+    
+    free(name);
     printf("\nSUCCESS: PROFILE NAME SET\n");
     return 0;
 }

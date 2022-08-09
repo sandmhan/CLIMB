@@ -26,13 +26,15 @@ int main(int argc, char *argv[]) {
 //Then the appropriate action is taken based on the char given.
 void menu_prompt(char *buff, Profile *a){
     
-    printf("\nMenu Options:\n(C)reate profile\n(P)rint profile\n(Q)uit\n\nARABE>");//arabe means choose in jap
+    printf("\nMenu Options:\n(C)reate profile\n(P)rint profile\n(Q)uit\n");
     char preinput = 0;//flag for cl args
     char valid = 1;
     while(valid){
-        if(buff == NULL){
+        if(buff == NULL){//skips if user input is given initially (for future implementation)
+            printf("\n(? for options)ARABE>");//arabe means choose in jap
             buff = malloc(sizeof(char));
             *buff = getchar();
+            while(getchar() != '\n' ){;}//clears buffer?
             preinput = 1;
         }
 
@@ -40,7 +42,6 @@ void menu_prompt(char *buff, Profile *a){
             case 'C':
             case 'c':
                 menu_profile_create(a);
-                valid = 0;
                 break;
 
             case 'P':
@@ -53,40 +54,42 @@ void menu_prompt(char *buff, Profile *a){
                 printf("\nWow ok I see how it is. Leave then, you soy boy that will not be blessed with the mooscles");
                 valid = 0;
                 break;
-            
+
+            case '?':
+
+
             default:
                 printf("\nInvalid input. Please try again:");
-                free(buff);
-                buff = NULL;
                 break;
         }
+
+        if(preinput){
+            free(buff);
+            buff = NULL;
+        }   
     }
 
-    //if memory was allocated, free it you goob
-    if(preinput){
-        free(buff);
-    }
 
     return; 
 }
 
 //Populates the fields for the profile, creates the file, and returns the pointer for use
 FILE *menu_profile_create(Profile *a){
-
-    char buff[100];
+     
     double weight,height;
    
-    //error handle invalid inputs later
+    //Retrieves name
     printf("\nPlease input the name for this profile: ");
-    profile_set_name(a, fgets(buff, 100,stdin));
 
-    printf("\nPlease input the weight for this profile: ");
-    scanf("%lf", &weight); 
-    profile_set_weight(a,weight);
+    profile_set_name(a,NULL);
 
     printf("\nPlease input the height for this profile: ");
     scanf("%lf", &height); 
     profile_set_height(a,height);
+
+    printf("\nPlease input the weight for this profile: ");
+    scanf("%lf", &weight); 
+    profile_set_weight(a,weight);
 
     return NULL;
 }

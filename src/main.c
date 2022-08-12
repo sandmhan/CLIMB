@@ -29,16 +29,18 @@ void menu_prompt(char *buff, Profile *a){
     printf("\nMenu Options:\n(C)reate profile\n(P)rint profile\n(Q)uit\n");
     char preinput = 0;//flag for cl args
     char valid = 1;
+    size_t line_size = 100;
     while(valid){
+        char option = 0;
+
         if(buff == NULL){//skips if user input is given initially (for future implementation)
             printf("\n(? for options)ARABE>");//arabe means choose in jap
-            buff = malloc(sizeof(char));
-            *buff = getchar();
-            while(getchar() != '\n' ){;}//clears buffer?
+            getline(&buff, &line_size, stdin);
+            option = buff[0];
             preinput = 1;
         }
 
-        switch(*buff){
+        switch(option){
             case 'C':
             case 'c':
                 menu_profile_create(a);
@@ -56,7 +58,8 @@ void menu_prompt(char *buff, Profile *a){
                 break;
 
             case '?':
-
+                printf("\nMenu Options:\n(C)reate profile\n(P)rint profile\n(Q)uit\n");
+                break;
 
             default:
                 printf("\nInvalid input. Please try again:");
@@ -64,6 +67,7 @@ void menu_prompt(char *buff, Profile *a){
         }
 
         if(preinput){
+            //why tf is this even here? for file input?
             free(buff);
             buff = NULL;
         }   
